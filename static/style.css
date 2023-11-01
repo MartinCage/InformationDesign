@@ -1,5 +1,26 @@
 body {
     display: flex;
     justify-content: center;
+    align-items: center;
     background: hotpink;
+}
+
+nav {
+    flex: 1 0 100%;
+    max-width: 1 0 100%;
+    background-color: #eaeaea;
+}
+
+nav ul {
+    display: flex;
+    gap: 20px;
+}
+
+nav ul li {
+    list-style-type: none;
+}
+
+nav ul li a {
+    color: blue;
+    text-decoration: none;
 }

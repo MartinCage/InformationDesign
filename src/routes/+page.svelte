@@ -1,3 +1,6 @@
-<h1>Welcome to SvelteKit</h1>
-<a href="/testChart">Test chart</a>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<nav>
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/testChart">Chart1</a></li>
+    </ul>
+</nav>

@@ -1,12 +1,26 @@
 <script>
-    import Bar from '../../lib/bar.svelte';
+    import Nav from '$lib/Nav.svelte';
+    import Bar from '$lib/bar.svelte';
+    import Chart from '$lib/chart.svelte'
+    import data from '$lib/data/dataSet.json';
+    import Filters from '$lib/Filters.svelte';
 </script>
 
-<Bar />
+<Nav/>
 
-<nav>
-    <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/testChart">Chart1</a></li>
-    </ul>
-</nav>
+<Filters/>
+
+<section>
+    {#each data as item}
+        <Bar {item} /> 
+    {/each}
+</section>
+
+<style>
+    section {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 25px;
+        justify-content: center;
+    }
+</style>

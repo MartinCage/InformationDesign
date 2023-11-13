@@ -7,47 +7,29 @@
     onMount(() => {
         // doe iets met svg en d3
 
-		const calorieElement = document.querySelector(`.amountCalories-${item.name}`);
+		const calorieElement = document.querySelector(`.amountCalories-${item.id}`);
 
-		const amountCalories = item.calories;
-		const newCalories = Math.floor(amountCalories / 8);
-		console.log(newCalories);
+		const newCalories = Math.floor(item.calories / 16);
 
 		for (let i = 0; i < newCalories; i++) {
-			let svg = document.createElement("svg");
-			svg.innerHTML = `
-				<use href="#sugarCube"></use>
-			`;
+			var img = document.createElement("img");
+			img.src = "https://freesvg.org/img/Sugar-cube-34345345.png";
+			img.style.width = "20px";
+			img.style.height = "20px";
 
-			calorieElement.appendChild(svg);
+			calorieElement.appendChild(img);
 		}
     });
 </script>
-
-<svg width="100" height="50">
-	<defs>
-		<g id="sugarCube" viewBox="0 0 32 32">
-			<path d="M474.01,89.302L273.876,3.673C268.215,1.235,262.201,0,256,0c-6.191,0-12.195,1.235-17.876,3.673
-			L37.991,89.302c-16.74,7.161-27.564,23.558-27.564,41.777v249.853c0,18.21,10.824,34.606,27.564,41.777l200.143,85.628
-			C243.815,510.766,249.819,512,256,512c6.18,0,12.186-1.234,17.876-3.663l200.134-85.628c16.739-7.171,27.563-23.567,27.563-41.777
-			V131.078C501.573,112.86,490.749,96.462,474.01,89.302z M41.027,380.932V131.078c0-1.313,0.176-2.616,0.539-3.899l205.785,88.048
-			V479.01L50.038,394.587C44.563,392.246,41.027,386.878,41.027,380.932z M461.962,394.587L264.659,479.01V215.228l205.776-88.048
-			c0.363,1.283,0.538,2.586,0.538,3.899v249.853C470.973,386.878,467.437,392.246,461.962,394.587z M256,30.6
-			c2.018,0,3.987,0.401,5.828,1.195l193.776,82.906L256,200.104L56.395,114.701l193.767-82.906C252.014,31.001,253.982,30.6,256,30.6
-			z"/>
-		</g>
-	</defs>
-	<use href="#sugarCube"></use> 
-</svg>
 
 <article class="card" id="{item.name}">
 	<header>
 		<h2 class="product-title">{item.name}</h2>
 	</header>
-	<img src="../images/drink.png" alt="Starbucks drink">
+	<img src="../images/drink.png" class="product-image" alt="Starbucks drink">
 	<div class="product-info">
 		<ul>
-			<li class="amountCalories">Caloriën: </li>
+			<li class="amountCalories-{item.id}">Caloriën: </li>
 			<li>Vet: {item.fat}</li>
 			<li>Proteïne {item.protein}</li>
 			<!-- <li >{item.suiker}</li> -->
@@ -62,20 +44,53 @@
 		align-items: center;
 		max-width: 250px;
 		width: 230px;
+		background-color: #01754A;
+		border-radius: 20px;
+		transition: all .3s ease-in-out;
+		padding: 20px;
+		color: white;
+		box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2);
 	}
+	article:hover {
+		transform: scale(1.1);
+		cursor: pointer;
+	}
+
+
+	article header {
+		width: 100%;
+	}
+
 	.product-title {
 		text-align: center;
 		font-size: 18px;
 		min-height: 60px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
+	.product-image {
+		width: 175px;
+	}
+
+	.product-info {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
 	.product-info ul {
 		padding: 0;
 	}
 
 	.product-info ul li {
 		list-style-type: none;
+		display: flex;
+    	gap: 3px;
 	}
-	img {
+
+	article img {
 		width: 200px;
 	}
 </style>

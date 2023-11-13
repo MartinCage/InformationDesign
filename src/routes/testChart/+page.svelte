@@ -4,6 +4,7 @@
     import Chart from '$lib/chart.svelte'
     import data from '$lib/data/dataSet.json';
     import Filters from '$lib/Filters.svelte';
+    import { onMount } from 'svelte';
 </script>
 
 <Nav/>
@@ -20,7 +21,8 @@
     section {
         display: flex;
         flex-wrap: wrap;
-        gap: 25px;
+        gap: 35px;
         justify-content: center;
+        padding: 50px 0 50px 0;
     }
 </style>

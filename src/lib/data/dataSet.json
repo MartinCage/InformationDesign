@@ -12,7 +12,7 @@
     {
         "id": 2,
         "name": "Ombré Pink Drink",
-        "calories": "-",
+        "calories": 50,
         "fat": "-",
         "Carb": "-",
         "fiber": "-",
@@ -22,7 +22,7 @@
     {
         "id": 3,
         "name": "Pink Drink",
-        "calories": "-",
+        "calories": 20,
         "fat": "-",
         "carb": "-",
         "fiber": "-",

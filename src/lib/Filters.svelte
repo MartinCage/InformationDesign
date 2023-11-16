@@ -8,20 +8,31 @@
 </section>
 
 <style>
+
+    section {
+        padding-bottom: 25px;
+    }
     .button-holder {
         width: 100%;
         display: flex;
         justify-content: center;
-        gap: 20px;
+        gap: 40px;
     }
 
     .button-holder button {
-        padding: 10px 25px;
+        padding: 15px 25px;
         border-radius: 15px;
         border: none;
-        background-color: white;
+        background-color: #e9e9e9;
         text-transform: uppercase;
         letter-spacing: 3px;
         font-weight: 600;
+        transition: all .3s ease-in-out;
+    }
+
+    .button-holder button:hover {
+        cursor: pointer;
+        background-color: #01754A;
+        color: white;
     }
 </style>

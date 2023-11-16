@@ -6,6 +6,9 @@
         <li><a class="nav-link" href="/">Home</a></li>
         <li><a class="nav-link" href="/testChart">Drankjes</a></li>
     </ul>
+    <div class="page-title">
+        <h1>Our Ingrediënts</h1>
+    </div>
 </nav>
 
 <style>
@@ -13,16 +16,16 @@
         display: flex;
         margin: 0;
         background-color: transparent;
-        padding-left: 40px;
     }
 
     nav ul {
         display: flex;
         align-items: center;
         gap: 40px;
-        flex: 1 0 100%;
-        max-width: 100%;
+        flex: 1 0 50%;
+        max-width: 50%;
         padding: 0;
+        margin: 50px 0;
     }
 
     nav ul li {
@@ -39,6 +42,19 @@
 
     .nav-logo {
         width: 100px;
+    }
+
+    .page-title {
+        display: flex;
+        flex: 1 0 50%;
+        max-width: 50%;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .page-title h1 {
+        font-size: 60px;
+        color: #01754A;
     }
 
     .active {

@@ -1,28 +1,28 @@
 <script>
 	import { onMount } from 'svelte';
 
-    const apiUrl = 'https://github.com/MartinCage/starbucks-api/blob/main/dataSet.json';
-
-    // Een eenvoudige GET-aanroep met fetch
-    fetch(apiUrl)
-    .then(response => {
-        // Controleer of het antwoord succesvol is (status 200-299)
-        if (!response.ok) {
-        throw new Error(`Network response was not ok: ${response.statusText}`);
-        }
-        // Parseer het antwoord als JSON
-        return response.json();
-    })
-    .then(data => {
-        // Doe iets met de ontvangen gegevens
-        console.log(data);
-    })
-    .catch(error => {
-        // Vang eventuele fouten op tijdens de aanroep
-        console.error('Fetch failed:', error);
-    });
-
     onMount(() => {
+
+        const apiUrl = 'https://raw.githubusercontent.com/MartinCage/starbucks-api/main/dataSet.json';
+
+        // Een eenvoudige GET-aanroep met fetch
+        fetch(apiUrl)
+        .then(response => {
+            // Controleer of het antwoord succesvol is (status 200-299)
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.statusText}`);
+            }
+            // Parseer het antwoord als JSON
+            return response.json();
+        })
+        .then(data => {
+            // Doe iets met de ontvangen gegevens
+            console.log(data);
+        })
+        .catch(error => {
+            // Vang eventuele fouten op tijdens de aanroep
+            console.error('Fetch failed:', error);
+        });
 
         // // Functie om kaarten te sorteren op basis van calorieën
         // function sortCards(order) {

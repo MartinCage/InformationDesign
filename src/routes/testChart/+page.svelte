@@ -1,30 +1,37 @@
 <script>
     import Nav from '$lib/Nav.svelte';
-    import Bar from '$lib/bar.svelte';
+    import Card from '$lib/Card.svelte';
     import Chart from '$lib/chart.svelte'
     import data from '$lib/data/dataSet.json';
     import Filters from '$lib/Filters.svelte';
-    import { onMount } from 'svelte';
 </script>
 
 <Nav/>
 
 <Filters/>
 
+<div class="section-wrapper">
 <section>
     {#each data as item}
-        <Bar {item} /> 
+        <Card {item} /> 
     {/each}
     <div class="circle"></div>
 </section>
+</div>
 
 <style>
+.section-wrapper {
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
     section {
         display: flex;
         flex-wrap: wrap;
-        gap: 35px;
         padding: 50px 0 50px 0;
         position: relative;
+        margin: 0 -17.5px;
+        overflow-x: hidden;
     }
 
     .circle {

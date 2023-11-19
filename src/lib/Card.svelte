@@ -1,23 +1,37 @@
 <script>
 	import { onMount } from 'svelte';
-	import * as d3 from 'd3';
-
 	export let item;
 
     onMount(() => {
-        // doe iets met svg en d3
+		function printData(attrValue, src, element) {
+			if (attrValue <= 0) {
+				element.innerHTML += ` ${attrValue}`;
+			} else {
+			for (let j = 0; j < attrValue; j++) {
+					let img = document.createElement("img");
+					img.className = "info-detail";
+					img.src = src;
+					element.appendChild(img);
+				}
+			}
+		}
 
-		const calorieElement = document.querySelector(`.amountCalories-${item.id}`);
+		// Key is bijv id, name, calories
+		// Value is de waarde 1, 'Ik ben de naam', 105
 
-		const newCalories = Math.floor(item.calories / 16);
+		for (const [key, value] of Object.entries(item)) {
+			let id = item.id;
+			const scales = [];
+				scales['calories'] = 0.02;
+				scales['fat'] = 0.02;
+				scales['protein'] = 1;
 
-		for (let i = 0; i < newCalories; i++) {
-			var img = document.createElement("img");
-			img.src = "https://freesvg.org/img/Sugar-cube-34345345.png";
-			img.style.width = "20px";
-			img.style.height = "20px";
-
-			calorieElement.appendChild(img);
+			if(key != 'id' && key != 'name') {
+				let attrValue = value * scales[key];
+				let src = `../images/${key}.png`;
+				let el = document.querySelector(`#amount-${key}-${id}`);
+				printData(attrValue, src, el);
+			}
 		}
     });
 </script>
@@ -34,9 +48,9 @@
 				</header>
 				<div class="product-info">
 					<ul>
-						<li class="amountCalories-{item.id}">Caloriën: </li>
-						<li>Vet: {item.fat}</li>
-						<li>Proteïne {item.protein}</li>
+						<li id="amount-calories-{item.id}" class="info-detail">Caloriën: </li>
+						<li id="amount-fat-{item.id}" class="info-detail">Vet: </li>
+						<li id="amount-protein-{item.id}" class="info-detail">Proteïne: </li>
 						<!-- <li >{item.suiker}</li> -->
 					</ul>
 				</div>
@@ -48,9 +62,11 @@
 <style>
 	article {
 		display: flex;
+		margin: 0 17.5px;
 		flex-direction: column;
-		max-width: 250px;
-		width: 230px;
+		width: calc(20% - 35px);
+		flex: 1 0 calc(20% - 35px);
+		max-width: calc(20% - 35px);
 		background-color: #01754A;
 		border-radius: 20px;
 		transition: all .3s ease-in-out;
@@ -58,6 +74,11 @@
 		box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
 		background-image: url('../images/Stars-white.svg');
 	}
+
+	article:not(:nth-child(-n+5)) {
+		margin-top: 35px;
+	}
+
 	article:hover {
 		transform: scale(1.1);
 		cursor: pointer;
@@ -102,10 +123,12 @@
 
 	.product-info {
 		width: 100%;
+		min-height: 90px;
 	}
 
 	.product-info ul {
 		padding: 0;
+		margin: 0;
 	}
 
 	.product-info ul li {
@@ -114,6 +137,13 @@
     	gap: 3px;
 		color: rgba(0, 0, 0, 0.3);
 		font-weight: bold;
+		width: 100%;
+		font-size: 20px;
+	}
+
+	.info-detail{
+		width: 20px;
+		height: 20px;
 	}
 
 	article img {

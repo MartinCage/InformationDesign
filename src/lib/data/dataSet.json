@@ -6,67 +6,67 @@
         "fat": 0,
         "carb": 11,
         "fiber": 0,
-        "protein": 0,
+        "protein": 5,
         "sodium": 10
     },
     {
         "id": 2,
         "name": "Ombré Pink Drink",
         "calories": 50,
-        "fat": "-",
+        "fat": 50,
         "Carb": "-",
         "fiber": "-",
-        "protein": "-",
+        "protein": 5,
         "sodium": "-"
     },
     {
         "id": 3,
         "name": "Pink Drink",
         "calories": 20,
-        "fat": "-",
+        "fat": 50,
         "carb": "-",
         "fiber": "-",
-        "protein": "-",
+        "protein": 5,
         "sodium": "-"
     },
     {
         "id": 4,
         "name": "Strawberry Acai Starbucks Refreshers™ Beverage",
         "calories": 80,
-        "fat": 0,
+        "fat": 50,
         "carb": 18,
         "fiber": 1,
-        "protein": 0,
+        "protein": 5,
         "sodium": 10
     },
     {
         "id": 5,
         "name": "Very Berry Hibiscus Starbucks Refreshers™ Beverage",
         "calories": 60,
-        "fat": 0,
+        "fat": 10,
         "carb": 14,
         "fiber": 1,
-        "protein": 0,
+        "protein": 5,
         "sodium": 10
     },
     {
         "id": 6,
         "name": "Violet Drink",
-        "calories": "-",
-        "fat": "-",
+        "calories": 120,
+        "fat": 20,
         "carb": "-",
         "fiber": "-",
-        "protein": "-",
+        "protein": 5,
         "sodium": "-"
     },
     {
         "id": 7,
         "name": "Evolution Fresh™ Cold-Pressed Apple Berry Juice",
-        "calories": "-",
-        "fat": "-",
+        "calories": 100,
+        "fat": 30,
         "carb": "-",
         "fiber": "-",
-        "protein": "-",
+        "protein": 5,
         "sodium": "-"
     }
 ]

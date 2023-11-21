@@ -91,6 +91,7 @@
 </script>
 
 <section>
+    <input type="text" placeholder="Search for pokemon">
     <div class="button-holder">
         <button id="asc">Sorteer oplopend</button>
         <button id="desc">Aflopend</button>
@@ -102,7 +103,7 @@
 <style>
 
     section {
-        padding-bottom: 25px;
+        margin: 60px 0;
     }
     .button-holder {
         width: 100%;

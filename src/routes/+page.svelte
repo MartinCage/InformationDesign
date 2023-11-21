@@ -3,5 +3,3 @@
 </script>
 
 <Nav/>
-
-<img src="/drink.png" alt="">

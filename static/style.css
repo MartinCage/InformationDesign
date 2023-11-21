@@ -4,3 +4,97 @@ body {
     font-family: "Roboto", sans-serif;
     background-color: #FFFFFF;
 }
+
+.card {
+    transition: all 1s;
+}
+
+article {
+    display: flex;
+    margin: 0 17.5px;
+    flex-direction: column;
+    width: calc(20% - 35px);
+    flex: 1 0 calc(20% - 35px);
+    max-width: calc(20% - 35px);
+    background-color: #01754A;
+    border-radius: 20px;
+    transition: all .3s ease-in-out;
+    color: white;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+    background-image: url('../images/Stars-white.svg');
+}
+
+article:not(:nth-child(-n+5)) {
+    margin-top: 35px;
+}
+
+article:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.stars-wrapper {
+    background-color: rgba(1, 117, 74, 0.7);
+    border-radius: 20px;
+    height: 100%;
+    width: 100%;
+}
+
+.stars {
+    height: 100%;
+    width: 100%;
+    border-radius: 20px;
+    background-image: linear-gradient(to bottom, rgba(255,0,0,0), rgba(1,117,74,1), 100%, rgba(1,117,74,1));
+}
+
+.content {
+    padding: 20px;
+}
+
+.visual {
+    display: flex;
+    justify-content: center;
+}
+
+.product-image {
+    width: 150px;
+    margin: 0 auto;
+}
+
+article header {
+    width: 100%;
+}
+
+.product-title {
+    font-size: 18px;
+    min-height: 60px;
+}
+
+.product-info {
+    width: 100%;
+    min-height: 90px;
+}
+
+.product-info ul {
+    padding: 0;
+    margin: 0;
+}
+
+.product-info ul li {
+    list-style-type: none;
+    display: flex;
+    gap: 3px;
+    color: rgba(0, 0, 0, 0.3);
+    font-weight: bold;
+    width: 100%;
+    font-size: 20px;
+}
+
+.info-detail{
+    width: 20px;
+    height: 20px;
+}
+
+article img {
+    width: 200px;
+}

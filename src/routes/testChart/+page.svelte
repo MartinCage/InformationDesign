@@ -1,7 +1,6 @@
 <script>
     import Nav from '$lib/Nav.svelte';
     import Card from '$lib/Card.svelte';
-    import Chart from '$lib/chart.svelte'
     import data from '$lib/data/dataSet.json';
     import Filters from '$lib/Filters.svelte';
 </script>
@@ -11,7 +10,7 @@
 <Filters/>
 
 <div class="section-wrapper">
-<section>
+<section id="cards-holder">
     {#each data as item}
         <Card {item} /> 
     {/each}
@@ -46,4 +45,6 @@
         background-image: url('../../images/Starbucks.png');
         background-size: 100%;
     }
+
+    
 </style>

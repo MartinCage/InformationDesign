@@ -4,6 +4,7 @@
     onMount(() => {
 
         const apiUrl = 'https://raw.githubusercontent.com/MartinCage/starbucks-api/main/dataSet.json';
+        let dataStore = [];
 
         // Een eenvoudige GET-aanroep met fetch
         fetch(apiUrl)
@@ -17,26 +18,74 @@
         })
         .then(data => {
             // Doe iets met de ontvangen gegevens
-            console.log(data);
+            return dataStore = data;
         })
         .catch(error => {
             // Vang eventuele fouten op tijdens de aanroep
             console.error('Fetch failed:', error);
         });
 
-        // // Functie om kaarten te sorteren op basis van calorieën
-        // function sortCards(order) {
-        //     const sortedCards = [...data]; // Maak een kopie van de gegevens om de originele volgorde te behouden
+        // Functie om kaarten te sorteren op basis van calorieën
+        function sortCards(order) {
+            if (order === 'asc') {
+                dataStore.sort((a, b) => a.calories - b.calories);
+                updateCardDisplay();
+            } else if (order === 'desc') {
+                dataStore.sort((a, b) => b.calories - a.calories);
+                updateCardDisplay();
+            }
+        }
 
-        //     if (order === 'asc') {
-        //         sortedCards.sort((a, b) => a.calories - b.calories);
-        //     } else if (order === 'desc') {
-        //         sortedCards.sort((a, b) => b.calories - a.calories);
-        //     }
-        // }
+        function updateCardDisplay() {
+            var cardsContainer = document.getElementById('cards-holder');
 
-        // document.getElementById("asc").addEventListener("click", sortCards('asc'));
-        // document.getElementById("desc").addEventListener("click", sortCards('desc'));
+            // Verwijder alle bestaande kaarten
+            while (cardsContainer.firstChild) {
+                cardsContainer.removeChild(cardsContainer.firstChild);
+            }
+
+            // // Voeg de kaarten opnieuw toe in de gesorteerde volgorde
+
+            dataStore.forEach(function (item) {
+                var newCard ='<div class="stars-wrapper">' +
+                                '<div class="stars">' +
+                                    '<div class="content">' +
+                                        '<div class="visual">' +
+                                            '<img src="../images/drink.png" class="product-image" alt="Starbucks drink">' +
+                                        '</div>' +
+                                        '<header>' +
+                                            `<h2 class="product-title">${item.name}</h2>` +
+                                        '</header>' +
+                                        '<div class="product-info">' +
+                                            '<ul>' +
+                                                `<li id="amount-calories-${item.id}" class="info-detail">Caloriën: ${item.calories}</li>` +
+                                                `<li id="amount-fat-${item.id}" class="info-detail">Vet: ${item.calories}</li>` +
+                                                `<li id="amount-protein-${item.id}" class="info-detail">Proteïne:  ${item.calories}</li>` +
+                                            '</ul>' +
+                                        '</div>' +
+                                    '</div>' +
+                                '</div>' +
+                            '</div>';
+
+                var container = document.createElement('article');
+                    container.classList.add('card');
+                    container.style.transition = "all 1s"
+                    container.setAttribute("id", `${item.name}`);
+                    container.innerHTML = newCard;
+                    cardsContainer.appendChild(container);
+            });
+        }
+
+        function sortAscending() {
+            sortCards('asc');
+        }
+
+        function sortDescending() {
+            sortCards('desc');
+        }
+
+        document.getElementById("asc").addEventListener("click", sortAscending);
+        document.getElementById("desc").addEventListener("click", sortDescending);
 
     });
 </script>

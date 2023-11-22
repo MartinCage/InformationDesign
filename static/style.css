@@ -3,7 +3,7 @@
 body {
     font-family: "Roboto", sans-serif;
     background-color: #FFFFFF;
-    padding: 0 250px 0;
+    padding: 0 250px 60px;
 }
 .card-link {
     text-decoration: none;

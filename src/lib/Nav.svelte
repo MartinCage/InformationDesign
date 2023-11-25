@@ -1,5 +1,7 @@
 <nav>
-    <img src="/images/Pokedex.png" alt="">
+    <a href="/">
+        <img src="/images/Pokedex.png" alt="">
+    </a>
 </nav>
 
 <style>

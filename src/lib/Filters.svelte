@@ -1,14 +1,45 @@
 <script>
 	import { onMount } from 'svelte';
+    import { dataStorePokemonNames } from "../stores";
+    import { getAllPokemonNames, getAllPokemonStats } from '$lib/apiCalls.js';
 
-    onMount(() => {
-        
+    onMount(async () => {
+
+        await getAllPokemonNames();
+
+        var pokemonNames = $dataStorePokemonNames;
+
+        // Doe hier je search filter functie ding
+
+        function searchPokemon(input) {
+            input = input.toLowerCase();
+
+            return pokemonNames.filter(pokemon =>
+                pokemon.name.toLowerCase().includes(input)
+            );
+        }
+
+        // Voeg een event listener toe aan het input-element
+        const inputField = document.getElementById('search-pokemon');
+        var pokemonSearchResult;
+
+        inputField.addEventListener('input', () => {
+            const inputQuery = inputField.value;
+            pokemonSearchResult = searchPokemon(inputQuery);
+
+            if(pokemonSearchResult) {
+                getAllPokemonStats(pokemonSearchResult);
+            } else {
+                getAllPokemonStats(pokemonNames);
+            }
+        });
+        await getAllPokemonStats(pokemonNames);
     });
 </script>
 
 <section>
     <div class="button-holder">
-        <input type="text" placeholder="Search for pokemon...">
+        <input type="text" id="search-pokemon" placeholder="Search for pokemon...">
         <button id="asc">Lowest number</button>
         <button id="desc">Highest number</button>
         <button>A-Z</button>

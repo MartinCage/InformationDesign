@@ -1,6 +1,6 @@
 <script>
-    import { dataStore } from '$lib/Stores.js';
     import { onMount } from 'svelte';
+    import { dataStore } from '../../stores.js';
 
     onMount(async () => {
         //Api Urls
@@ -20,6 +20,7 @@
         })
         .then(data => {
             // Roep de getPokemons functie aan en stuur alleen de results uit data mee
+            dataStore.set(data);
             pokemons = data.results;
         })
         .catch(error => {
@@ -27,33 +28,14 @@
             console.error('Fetch failed:', error);
         });
 
-        // Tweede API-aanroep
 
+
+        // Tweede API-aanroep
         //Api Urls
         const pokemonStatsUrl = 'https://pokeapi.co/api/v2/pokemon/';
-        var data2;
 
-        // Een eenvoudige GET-aanroep met fetch
-        await fetch(pokemonStatsUrl)
-        .then(response => {
-            // Controleer of het antwoord succesvol is (status 200-299)
-            if (!response.ok) {
-                throw new Error(`Network response was not ok: ${response.statusText}`);
-            }
-            // Parseer het antwoord als JSON
-            return response.json();
-        })
-        .then(data => {
-            // Roep de getPokemons functie aan en stuur alleen de results uit data mee
-            data2 = data;
-        })
-        .catch(error => {
-            // Vang eventuele fouten op tijdens de aanroep
-            console.error('Fetch failed:', error);
-        });
-
-        pokemons.forEach(function (pokemon) {
-            fetch(pokemonStatsUrl + pokemon.name)
+        pokemons.forEach(async function (pokemon) {
+            await fetch(pokemonStatsUrl + pokemon.name)
             .then(response => {
                 // Controleer of het antwoord succesvol is (status 200-299)
                 if (!response.ok) {

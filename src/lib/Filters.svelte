@@ -4,12 +4,11 @@
     import { getAllPokemonNames, getAllPokemonStats } from '$lib/apiCalls.js';
 
     onMount(async () => {
-
         await getAllPokemonNames();
-
         var pokemonNames = $dataStorePokemonNames;
-
-        // Doe hier je search filter functie ding
+        var pokemonSearchResult;
+        var inputField;
+        var inputQuery;
 
         function searchPokemon(input) {
             input = input.toLowerCase();
@@ -20,11 +19,10 @@
         }
 
         // Voeg een event listener toe aan het input-element
-        const inputField = document.getElementById('search-pokemon');
-        var pokemonSearchResult;
-
+        inputField = document.getElementById('search-pokemon');
+        
         inputField.addEventListener('input', () => {
-            const inputQuery = inputField.value;
+            inputQuery = inputField.value;
             pokemonSearchResult = searchPokemon(inputQuery);
 
             if(pokemonSearchResult) {
@@ -33,17 +31,51 @@
                 getAllPokemonStats(pokemonNames);
             }
         });
+
+        // Haal alle pokemons op
         await getAllPokemonStats(pokemonNames);
+
+        // Clear het input veld
+        var clearInputBtn = document.getElementById('clearInputBtn');
+        function clearInputField(){
+            inputField.value = '';
+            getAllPokemonStats(pokemonNames);
+        }
+        clearInputBtn.addEventListener('click', clearInputField);
+
+
+        // Sorteer op afabetische volgorde
+        var sortAscBtn = document.getElementById('ascBtn');
+        var sortDescBtn = document.getElementById('descBtn');
+        var result;
+
+        function sortPokemons() {
+            pokemonNames.sort(function(a, b) {
+                var textA = a.name.toUpperCase();
+                var textB = b.name.toUpperCase();
+                result = (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+                console.log(result);
+            });
+        }
+
+
+        sortAscBtn.addEventListener('click', sortPokemons);
+        sortDescBtn.addEventListener('click', sortPokemons);
     });
 </script>
 
 <section>
     <div class="button-holder">
-        <input type="text" id="search-pokemon" placeholder="Search for pokemon...">
-        <button id="asc">Lowest number</button>
-        <button id="desc">Highest number</button>
-        <button>A-Z</button>
-        <button>Z-A</button>
+        <div class="input-holder">
+            <input type="text" id="search-pokemon" placeholder="Search for pokemon...">
+            <button id="clearInputBtn">
+                <i class="fa-solid fa-xmark fa-xl"></i>
+            </button>
+        </div>
+        <button>Lowest number</button>
+        <button>Highest number</button>
+        <button id="ascBtn">A-Z</button>
+        <button id="descBtn">Z-A</button>
     </div>
 </section>
 
@@ -59,14 +91,29 @@
         justify-content: center;
     }
 
-    .button-holder input{
-        width: 400px;
+    .input-holder {
+        position: relative;
     }
 
-    .button-holder input[type=text] {
-        padding: 5px 10px;
+    .input-holder input[type=text] {
+        padding: 15px 15px;
         font-size: 16px;
     }
+
+    #clearInputBtn {
+        position: absolute;
+        right: 10px;
+        padding: 0;
+        background-color: transparent;
+        margin: 0;
+        top: 50%;
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+    }
+    #clearInputBtn:hover {
+        color: black;
+    }
+
 
     .button-holder input::placeholder {
         opacity: 0.5;

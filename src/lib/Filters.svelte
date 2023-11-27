@@ -4,12 +4,15 @@
     import { getAllPokemonNames, getAllPokemonStats } from '$lib/apiCalls.js';
 
     onMount(async () => {
+        // Haal alle pokemon namen op
         await getAllPokemonNames();
         var pokemonNames = $dataStorePokemonNames;
         var pokemonSearchResult;
         var inputField;
         var inputQuery;
+        var inputField = document.getElementById('search-pokemon');
 
+        // Kijk of de waarde uit het input veld overeenkomt met de pokemonnaam
         function searchPokemon(input) {
             input = input.toLowerCase();
 
@@ -18,9 +21,10 @@
             );
         }
 
-        // Voeg een event listener toe aan het input-element
-        inputField = document.getElementById('search-pokemon');
-        
+        // Kijk naar de waarde die je in het input veld stopt en roep de functie inputQuery aan
+        // Als pokemonSearchResult gevuld is, laat dan de overeenkomende pokemons zien
+        // Als pokemonSearchResult leeg is, laat dan alle pokemons zien.
+
         inputField.addEventListener('input', () => {
             inputQuery = inputField.value;
             pokemonSearchResult = searchPokemon(inputQuery);
@@ -32,10 +36,10 @@
             }
         });
 
-        // Haal alle pokemons op
+        // Haal standaard alle pokemons op
         await getAllPokemonStats(pokemonNames);
 
-        // Clear het input veld
+        // Leeg het inputveld als er op de knop wordt gedrukt
         var clearInputBtn = document.getElementById('clearInputBtn');
         function clearInputField(){
             inputField.value = '';
@@ -43,24 +47,38 @@
         }
         clearInputBtn.addEventListener('click', clearInputField);
 
-
         // Sorteer op afabetische volgorde
         var sortAscBtn = document.getElementById('ascBtn');
         var sortDescBtn = document.getElementById('descBtn');
-        var result;
 
-        function sortPokemons() {
-            pokemonNames.sort(function(a, b) {
-                var textA = a.name.toUpperCase();
-                var textB = b.name.toUpperCase();
-                result = (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-                console.log(result);
-            });
+        function comparePokemonsASC(a, b) {
+            if ( a.name < b.name ){
+                return -1;
+            } else {
+                return 0;
+            }
         }
 
+        function comparePokemonsDESC(a, b) {
+            if ( a.name > b.name ){
+                return -1;
+            } else {
+                return 0;
+            }
+        }
 
-        sortAscBtn.addEventListener('click', sortPokemons);
-        sortDescBtn.addEventListener('click', sortPokemons);
+        function sortPokemonsASC() {
+            var result = pokemonNames.sort(comparePokemonsASC);
+            getAllPokemonStats(result);
+        }
+
+        function sortPokemonsDESC() {
+            var result = pokemonNames.sort(comparePokemonsDESC);
+            getAllPokemonStats(result);
+        }
+
+        sortAscBtn.addEventListener('click', sortPokemonsASC);
+        sortDescBtn.addEventListener('click', sortPokemonsDESC);
     });
 </script>
 
@@ -72,8 +90,6 @@
                 <i class="fa-solid fa-xmark fa-xl"></i>
             </button>
         </div>
-        <button>Lowest number</button>
-        <button>Highest number</button>
         <button id="ascBtn">A-Z</button>
         <button id="descBtn">Z-A</button>
     </div>

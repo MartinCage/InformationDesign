@@ -19,7 +19,7 @@
                 var pokemonId = pokemon.id < 10 ? '000' + pokemon.id : pokemon.id <= 100 ? '00' + pokemon.id : pokemon.id >= 100 ? '0' + pokemon.id : pokemon.id;
                 var card = document.createElement('a');
                 card.className = 'card-link';
-                card.href = `pokemonDetail?name=${pokemon.name}`;
+                card.href = `pokemonDetail?name=${pokemon.name}&id=${pokemon.id}`;
 
                 // Voeg de titel en inhoud toe aan de kaart
                 card.innerHTML = `

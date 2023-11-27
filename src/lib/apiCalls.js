@@ -1,5 +1,5 @@
 
-import { dataStorePokemonNames, dataStorePokemonStats, dataStoreSpecificPokemon } from "../stores";
+import { dataStorePokemonNames, dataStorePokemonStats, dataStoreSpecificPokemon, dataStorePokemonGender } from "../stores";
 
 export async function getAllPokemonNames() {
     const allPokemonsUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=200&offset=0';
@@ -97,8 +97,9 @@ export async function getSpecificPokemon(pokemonName) {
         return response.json();
     })
     .then(data => {
-        var pokemonMoves = [];
-        var pokemonTypes = [];
+        const pokemonMoves = [];
+        const pokemonTypes = [];
+        const pokemonAbilities = [];
 
         // Stop elke move naam in de array pokemonMoves
         data.moves.forEach(element => {
@@ -110,6 +111,13 @@ export async function getSpecificPokemon(pokemonName) {
             pokemonTypes.push(element.type.name);
         });
 
+        // Stop elk type naam in de array pokemonTypes
+        data.abilities.forEach(element => {
+            pokemonAbilities.push(element.ability.name);
+        });
+
+        const abilitiesResult = pokemonAbilities.join(', ');
+
         // Maak een nieuw pokemon object met bijbehorende data
         const pokemon = {
             id: data.id,
@@ -119,13 +127,48 @@ export async function getSpecificPokemon(pokemonName) {
             height: data.height,
             weight: data.weight,
             front_image: data.sprites.front_default,
-            shiny_image: data.sprites.front_shiny
+            shiny_image: data.sprites.front_shiny,
+            abilities: abilitiesResult
         }
 
         // Stop elke pokemon in de array pokemonData
         pokemonData.push(pokemon);
 
         dataStoreSpecificPokemon.set(pokemonData);
+    })
+    .catch(error => {
+        // Vang eventuele fouten op tijdens de aanroep
+        console.error('Fetch failed:', error);
+    });
+}
+
+// Vierde API call
+// Haal de gender van een pokemon op
+
+export async function getPokemonGender(pokemonId) {
+    const pokemonGenderUrl = 'https://pokeapi.co/api/v2/gender/';
+    var pokemonData = [];
+
+    await fetch(pokemonGenderUrl + pokemonId)
+    .then(response => {
+        // Controleer of het antwoord succesvol is (status 200-299)
+        if (!response.ok) {
+            throw new Error(`Network response was not ok: ${response.statusText}`);
+        }
+        // Parseer het antwoord als JSON
+        return response.json();
+    })
+    .then(data => {
+        // Maak een nieuw pokemon object met bijbehorende data
+        const pokemon = {
+            id: data.id,
+            gender: data.name
+        }
+
+        // Stop elke pokemon in de array pokemonData
+        pokemonData.push(pokemon);
+
+        dataStorePokemonGender.set(pokemonData);
     })
     .catch(error => {
         // Vang eventuele fouten op tijdens de aanroep

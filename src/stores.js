@@ -6,4 +6,4 @@ export const dataStoreSpecificPokemon = writable([]);
 
 export const dataStorePokemonStats = writable([]);
 
-// export const dataStorePokemonGenders = writable([]);
+export const dataStorePokemonGender = writable([]);

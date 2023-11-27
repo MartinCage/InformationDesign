@@ -1,34 +1,44 @@
 <script>
 	import { onMount } from "svelte";
-    import { dataStorePokemonStats, dataStoreSpecificPokemon } from "../../stores";
-    import { getSpecificPokemon } from '$lib/apiCalls.js';
+    import { dataStoreSpecificPokemon, dataStorePokemonGender } from "../../stores";
+    import { getSpecificPokemon, getPokemonGender } from '$lib/apiCalls.js';
     import Nav from '$lib/Nav.svelte';
 	import PokemonStatsChart from "../../lib/pokemonStatsChart.svelte";
 
     var selectedPokemon;
     var pokemonName;
+    var pokemonGenderName;
+    var selectedGender;
     var pokemonId;
 
     onMount(async () => {
         var url = window.location.href;
         const searchParams = new URLSearchParams(new URL(url).search);
 
-        // await getPokemonGender(searchParams.get('name'));
         await getSpecificPokemon(searchParams.get('name'));
+        await getPokemonGender(searchParams.get('id'));
+
+        dataStorePokemonGender.subscribe((pokemonGender) => {
+            selectedGender = pokemonGender[0];
+            pokemonGenderName = selectedGender.gender.charAt(0).toUpperCase() + selectedGender.gender.slice(1);
+        });
 
         dataStoreSpecificPokemon.subscribe((pokemonStats) => {
-            // Haal de waarde van de 'name'-parameter op
 
+            // Haal uit de array de eerste waarde op (Zo kom je in het object)
             selectedPokemon = pokemonStats[0];
             pokemonName = selectedPokemon.name.charAt(0).toUpperCase() + selectedPokemon.name.slice(1);
             pokemonId = selectedPokemon.id < 10 ? '000' + selectedPokemon.id : selectedPokemon.id <= 100 ? '00' + selectedPokemon.id : selectedPokemon.id >= 100 ? '0' + selectedPokemon.id : selectedPokemon.id;
         
+            // Maak een array voor de types
             var pokemonTypes = [];
 
-            // Stop elke move naam in de array pokemonMoves
+            // Stop elke type naam in de array pokemonTypes
             selectedPokemon.type.forEach(element => {
                 pokemonTypes.push(element);
+                pokemonTypes.join(', ')
             });
+
         });
     });
 </script>
@@ -40,15 +50,9 @@
         <h2>{pokemonName} <span>Nr. {pokemonId}</span></h2>
     </div>
     <div class="card-body">
-        <div class="col-left">
-            <div class="pokemon-visual">
-                <img class="pokemon-image" src="{selectedPokemon.front_image}" alt="">
-            </div>
-            <div class="pokemon-stats">
-                <PokemonStatsChart/>
-            </div>
+        <div class="pokemon-visual">
+            <img class="pokemon-image" src="{selectedPokemon.front_image}" alt="">
         </div>
-        <div class="col-right">
             <div class="pokemon-data">
                 <div class="col-left">
                     <div class="pokemon-height">
@@ -61,7 +65,7 @@
                     </div>
                     <div class="pokemon-gender">
                         <p>Gender</p>
-                        <p>{selectedPokemon.weight}</p>
+                        <p>{#if pokemonGenderName}{pokemonGenderName}{/if}</p>
                     </div>
                 </div>
                 <div class="col-right">
@@ -71,14 +75,17 @@
                     </div>
                     <div class="pokemon-weakness">
                         <p>Abilities</p>
-                        <p>{selectedPokemon.weight}</p>
+                        <p>{selectedPokemon.abilities}</p>
+                    </div>
+                    <div class="pokemon-types">
+                        <p>Types</p>
+                        <p>{selectedPokemon.type}</p>
                     </div>
                 </div>
             </div>
-            <div class="pokemon-types">
-                <p>Types</p>
-                <p>{selectedPokemon.type}</p>
-            </div>
+
+        <div class="pokemon-stats">
+            <PokemonStatsChart/>
         </div>
         <div class="pokemon-evolutions">
             <p>Evolutions Hier</p>
@@ -88,19 +95,10 @@
 {/if}
 
 <style>
-    .pokemon-detail {
-        /* padding: 0 250px; */
-    }
-
     .card-body {
         display: flex;
-        flex-wrap: wrap;
-    }
-    .card-body > .col-left, .card-body > .col-right {
-        display: flex;
-        flex: 1 0 50%;
-        max-width: 50%;
         flex-direction: column;
+        align-items: center;
     }
 
     .card-title {
@@ -117,8 +115,8 @@
     }
 
     .pokemon-visual {
-        flex: 1 0 50%;
-        max-width: 50%;
+        flex: 1 0 100%;
+        max-width: 100%;
         display: flex;
         justify-content: center;
         align-items: center;

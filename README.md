@@ -38,9 +38,14 @@ After that, install npm and the dependencies
 -- npm install
 ```
 
-## Developing
+### Developing
 
 Once you've cloned the repository and installed the dependencies start a development server:
 
 ```bash
 npm run dev
+
+### Live Demo
+
+You can see a live demo at:
+https://martijn-information-design.nl/

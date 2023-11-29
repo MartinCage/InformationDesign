@@ -2,8 +2,10 @@
 
 body {
     font-family: "Roboto", sans-serif;
-    background-color: #FFFFFF;
-    padding: 0 250px 60px;
+    background-color: #727272;
+    background-image: repeating-linear-gradient(-45deg, #6a6a6a 0, #6a6a6a 2px, #727272 2px, #727272 11px);
+    background-size: 16px 16px;
+    /* padding: 0 250px 60px; */
 }
 .card-link {
     text-decoration: none;
@@ -41,4 +43,16 @@ body {
 .card-info p {
     margin: 0;
     margin-bottom: 15px;
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px){
+    body {
+        padding: 0 50px 60px;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    body {
+        padding: 0 250px 60px;
+    }
 }

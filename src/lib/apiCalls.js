@@ -1,8 +1,8 @@
 
-import { dataStorePokemonNames, dataStorePokemonStats, dataStoreSpecificPokemon, dataStorePokemonGender } from "../stores";
+import { dataStorePokemonNames, dataStorePokemonStats, dataStoreSpecificPokemon } from "../stores";
 
 export async function getAllPokemonNames() {
-    const allPokemonsUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=200&offset=0';
+    const allPokemonsUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=50&offset=0';
 
     // Een eenvoudige GET-aanroep met fetch
     await fetch(allPokemonsUrl)
@@ -84,10 +84,10 @@ export function getAllPokemonStats(pokemonNames) {
 // Derde API call
 
 export async function getSpecificPokemon(pokemonName) {
-    const pokemonStatsUrl = 'https://pokeapi.co/api/v2/pokemon/';
+    const pokemonStatsUrl = `https://pokeapi.co/api/v2/pokemon/${pokemonName}/`;
     var pokemonData = [];
 
-    await fetch(pokemonStatsUrl + pokemonName)
+    await fetch(pokemonStatsUrl)
     .then(response => {
         // Controleer of het antwoord succesvol is (status 200-299)
         if (!response.ok) {
@@ -106,6 +106,8 @@ export async function getSpecificPokemon(pokemonName) {
             pokemonMoves.push(element.move.name);
         });
 
+        console.log(data);
+
         // Stop elk type naam in de array pokemonTypes
         data.types.forEach(element => {
             pokemonTypes.push(element.type.name);
@@ -116,6 +118,16 @@ export async function getSpecificPokemon(pokemonName) {
             pokemonAbilities.push(element.ability.name);
         });
 
+        const pokemonBaseStats = {
+            id: data.id,
+            hp: data.stats[0].base_stat,
+            attack: data.stats[1].base_stat,
+            defense: data.stats[2].base_stat,
+            speed: data.stats[3].base_stat
+        }
+
+        const newPokemonWeight = data.weight / 10;
+        const typeResult = pokemonTypes.join(', ');
         const abilitiesResult = pokemonAbilities.join(', ');
 
         // Maak een nieuw pokemon object met bijbehorende data
@@ -123,52 +135,19 @@ export async function getSpecificPokemon(pokemonName) {
             id: data.id,
             name: data.name,
             moves: pokemonMoves,
-            type: pokemonTypes,
+            type: typeResult,
             height: data.height,
-            weight: data.weight,
+            weight: newPokemonWeight,
             front_image: data.sprites.front_default,
             shiny_image: data.sprites.front_shiny,
-            abilities: abilitiesResult
+            abilities: abilitiesResult,
+            base_stats: pokemonBaseStats
         }
 
         // Stop elke pokemon in de array pokemonData
         pokemonData.push(pokemon);
 
         dataStoreSpecificPokemon.set(pokemonData);
-    })
-    .catch(error => {
-        // Vang eventuele fouten op tijdens de aanroep
-        console.error('Fetch failed:', error);
-    });
-}
-
-// Vierde API call
-// Haal de gender van een pokemon op
-
-export async function getPokemonGender(pokemonId) {
-    const pokemonGenderUrl = 'https://pokeapi.co/api/v2/gender/';
-    var pokemonData = [];
-
-    await fetch(pokemonGenderUrl + pokemonId)
-    .then(response => {
-        // Controleer of het antwoord succesvol is (status 200-299)
-        if (!response.ok) {
-            throw new Error(`Network response was not ok: ${response.statusText}`);
-        }
-        // Parseer het antwoord als JSON
-        return response.json();
-    })
-    .then(data => {
-        // Maak een nieuw pokemon object met bijbehorende data
-        const pokemon = {
-            id: data.id,
-            gender: data.name
-        }
-
-        // Stop elke pokemon in de array pokemonData
-        pokemonData.push(pokemon);
-
-        dataStorePokemonGender.set(pokemonData);
     })
     .catch(error => {
         // Vang eventuele fouten op tijdens de aanroep

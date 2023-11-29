@@ -38,9 +38,12 @@
         })
     });
 </script>
-<Nav/>
-<Filters/>
-<div id="pokemon-holder"></div>
+<div class="container">
+    <Nav/>
+    <Filters/>
+    <div id="pokemon-holder"></div>
+</div>
+
 <style>
     #pokemon-holder {
         display: flex;

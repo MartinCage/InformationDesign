@@ -6,6 +6,8 @@
     onMount(async () => {
         // Haal alle pokemon namen op
         await getAllPokemonNames();
+
+        // Definieer de variabelen
         var pokemonNames = $dataStorePokemonNames;
         var pokemonSearchResult;
         var inputField;

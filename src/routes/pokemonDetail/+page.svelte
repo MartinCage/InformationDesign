@@ -18,12 +18,6 @@
         const searchParams = new URLSearchParams(new URL(url).search);
 
         await getSpecificPokemon(searchParams.get('name'));
-        // await getPokemonGender(searchParams.get('id'));
-
-        // dataStorePokemonGender.subscribe((pokemonGender) => {
-        //     selectedGender = pokemonGender[0].name;
-        //     pokemonGenderName = selectedGender.charAt(0).toUpperCase() + selectedGender.slice(1);
-        // });
 
         dataStoreSpecificPokemon.subscribe((pokemonStats) => {
             // Haal uit de array de eerste waarde op

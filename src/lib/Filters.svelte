@@ -6,6 +6,7 @@
     onMount(async () => {
         // Haal alle pokemon namen op
         await getAllPokemonNames();
+        
 
         // Definieer de variabelen
         var pokemonNames = $dataStorePokemonNames;
@@ -13,6 +14,9 @@
         var inputField;
         var inputQuery;
         var inputField = document.getElementById('search-pokemon');
+
+        // Haal alle data van pokemons op (sprites etc..)
+        await getAllPokemonStats(pokemonNames);
 
         // Kijk of de waarde uit het input veld overeenkomt met de pokemonnaam
         function searchPokemon(input) {
@@ -22,6 +26,8 @@
                 pokemon.name.toLowerCase().includes(input)
             );
         }
+
+
 
         // Kijk naar de waarde die je in het input veld stopt en roep de functie inputQuery aan
         // Als pokemonSearchResult gevuld is, laat dan de overeenkomende pokemons zien
@@ -38,21 +44,22 @@
             }
         });
 
-        // Haal standaard alle pokemons op
-        await getAllPokemonStats(pokemonNames);
-
         // Leeg het inputveld als er op de knop wordt gedrukt
         var clearInputBtn = document.getElementById('clearInputBtn');
+
         function clearInputField(){
             inputField.value = '';
             getAllPokemonStats(pokemonNames);
         }
         clearInputBtn.addEventListener('click', clearInputField);
 
-        // Sorteer op afabetische volgorde
-        var sortAscBtn = document.getElementById('ascBtn');
-        var sortDescBtn = document.getElementById('descBtn');
 
+        // Sorteer functie
+        const sortAscBtn = document.getElementById('ascBtn');
+        const sortDescBtn = document.getElementById('descBtn');
+
+        // Sorteer van A-Z volgorde
+        // Als a.name kleiner is als b.name, betekent dat a eerder in de gesorteerde array moet komen dan b
         function comparePokemonsASC(a, b) {
             if ( a.name < b.name ){
                 return -1;
@@ -61,6 +68,9 @@
             }
         }
 
+        // Sorteer van Z-A volgorde en
+        // Als a.name groter is als b.name, betekent dat a later in de gesorteerde array moet komen dan b
+        
         function comparePokemonsDESC(a, b) {
             if ( a.name > b.name ){
                 return -1;
@@ -69,13 +79,14 @@
             }
         }
 
+        // Koppel de waardes uit de compare functie aan een daadwerkelijke toonbare volgorde in de pokemonArray
         function sortPokemonsASC() {
-            var result = pokemonNames.sort(comparePokemonsASC);
+            let result = pokemonNames.sort(comparePokemonsASC);
             getAllPokemonStats(result);
         }
 
         function sortPokemonsDESC() {
-            var result = pokemonNames.sort(comparePokemonsDESC);
+            let result = pokemonNames.sort(comparePokemonsDESC);
             getAllPokemonStats(result);
         }
 
@@ -131,7 +142,6 @@
     #clearInputBtn:hover {
         color: black;
     }
-
 
     .button-holder input::placeholder {
         opacity: 0.5;

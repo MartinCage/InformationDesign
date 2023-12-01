@@ -4,33 +4,34 @@
     import { getSpecificPokemon } from '$lib/apiCalls.js';
     import Nav from '$lib/Nav.svelte';
 	import PokemonStatsChart from "../../lib/pokemonStatsChart.svelte";
-    import * as d3 from 'd3';
 
     var selectedPokemon;
     var pokemonName;
-    var pokemonGenderName;
     var pokemonId;
     var pokemonBaseStatsObject;
     var pokemonBaseStats = [];
 
     onMount(async () => {
-        var url = window.location.href;
+        // Haal de data op van een specifieke pokemon d.m.v. de naam uit de url
+        const url = window.location.href;
         const searchParams = new URLSearchParams(new URL(url).search);
-
         await getSpecificPokemon(searchParams.get('name'));
 
+
+        // 'Abboneer' op de store. Als de waarde in de store veranderd, verander dan ook de waardes in deze code mee
         dataStoreSpecificPokemon.subscribe((pokemonStats) => {
-            // Haal uit de array de eerste waarde op
+            // De gevonden pokemon is altijd op positie 0 in de array
             selectedPokemon = pokemonStats[0];
             pokemonBaseStatsObject = pokemonStats[0].base_stats;
 
-            console.log(pokemonBaseStatsObject);
-
+            // Haal uit het object de waardes van de base_stats. Stuur deze waardes in een prop mee via de html
             for (const key in pokemonBaseStatsObject) {
                 pokemonBaseStats.push(pokemonBaseStatsObject[key]);
             }
-
+            
+            // Maak van de eerste letter uit de pokemon naam een hoofdletter
             pokemonName = selectedPokemon.name.charAt(0).toUpperCase() + selectedPokemon.name.slice(1);
+            // Elk pokemon id krijgt een 0 ervoor op basis van het aantal getallen waar het id uit bestaat
             pokemonId = selectedPokemon.id < 10 ? '000' + selectedPokemon.id : selectedPokemon.id <= 100 ? '00' + selectedPokemon.id : selectedPokemon.id >= 100 ? '0' + selectedPokemon.id : selectedPokemon.id;
         });
     });
@@ -262,9 +263,13 @@
             gap: 50px;
         }
 
+        .pokemon-detail-card {
+            width: 370px;
+        }
+
         .data-legenda {
             position: static;
-            width: 100%;
+            width: 340px;
             display: flex;
             flex-wrap: wrap;
             align-items: center;

@@ -1,21 +1,22 @@
 
 import { dataStorePokemonNames, dataStorePokemonStats, dataStoreSpecificPokemon } from "../stores";
 
+// Haal de namen op van de pokemons en limiteer dit naar 50
 export async function getAllPokemonNames() {
     const allPokemonsUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=50&offset=0';
 
-    // Een eenvoudige GET-aanroep met fetch
+    // Een GET-aanroep met fetch
     await fetch(allPokemonsUrl)
     .then(response => {
-        // Controleer of het antwoord succesvol is (status 200-299)
+        // Controleer of het antwoord succesvol is
         if (!response.ok) {
             throw new Error(`Network response was not ok: ${response.statusText}`);
         }
-        // console.log(response.json());
+        // Parse het om naar JSON
         return response.json();
     })
     .then(data => {
-        // Roep de getPokemons functie aan en stuur alleen de results uit data mee
+        // Vul de store stuur alleen de results uit data mee
         dataStorePokemonNames.set(data.results);
     })
     .catch(error => {
@@ -25,7 +26,7 @@ export async function getAllPokemonNames() {
 }
 
 // Tweede Api Call
-
+// Haal alle data van alle pokemons op uit de lijst op home
 export function getAllPokemonStats(pokemonNames) {
     const pokemonStatsUrl = 'https://pokeapi.co/api/v2/pokemon/';
     var pokemonData = [];
@@ -33,16 +34,14 @@ export function getAllPokemonStats(pokemonNames) {
     pokemonNames.forEach(async function (pokemon) {
         await fetch(pokemonStatsUrl + pokemon.name)
         .then(response => {
-            // Controleer of het antwoord succesvol is (status 200-299)
             if (!response.ok) {
                 throw new Error(`Network response was not ok: ${response.statusText}`);
             }
-            // Parseer het antwoord als JSON
             return response.json();
         })
         .then(data => {
-            var pokemonMoves = [];
-            var pokemonTypes = [];
+            let pokemonMoves = [];
+            let pokemonTypes = [];
 
             // Stop elke move naam in de array pokemonMoves
             data.moves.forEach(element => {
@@ -66,34 +65,31 @@ export function getAllPokemonStats(pokemonNames) {
                 shiny_image: data.sprites.front_shiny
             }
 
-            // Stop elke pokemon in de array pokemonData
+            // Stop elk pokemon object in de array pokemonData
             pokemonData.push(pokemon);
 
-            // Zodra de pokemonData array even lang is de pokemonNames array set dan de dataStorePokemonStats
+            // Zodra de pokemonData array even lang is de pokemonNames array vul dan de dataStorePokemonStats met pokemondata
             if(pokemonNames.length === pokemonData.length) {
                 dataStorePokemonStats.set(pokemonData);
             }
         })
         .catch(error => {
-            // Vang eventuele fouten op tijdens de aanroep
             console.error('Fetch failed:', error);
         })
     });
 }
 
 // Derde API call
-
+// Haal de specifieke pokemondata op de pokemon waar je op hebt geklikt en naar de detailpagina gaat
 export async function getSpecificPokemon(pokemonName) {
-    const pokemonStatsUrl = `https://pokeapi.co/api/v2/pokemon/${pokemonName}/`;
+    const pokemonStatsUrl = `https://pokeapi.co/api/v2/pokemon/`;
     var pokemonData = [];
 
-    await fetch(pokemonStatsUrl)
+    await fetch(pokemonStatsUrl + pokemonName)
     .then(response => {
-        // Controleer of het antwoord succesvol is (status 200-299)
         if (!response.ok) {
             throw new Error(`Network response was not ok: ${response.statusText}`);
         }
-        // Parseer het antwoord als JSON
         return response.json();
     })
     .then(data => {
@@ -101,23 +97,30 @@ export async function getSpecificPokemon(pokemonName) {
         const pokemonTypes = [];
         const pokemonAbilities = [];
 
+        // Gewicht van hectogram naar kilogram
+        const newPokemonWeight = data.weight / 10;
+
+
         // Stop elke move naam in de array pokemonMoves
         data.moves.forEach(element => {
             pokemonMoves.push(element.move.name);
         });
-
-        console.log(data);
 
         // Stop elk type naam in de array pokemonTypes
         data.types.forEach(element => {
             pokemonTypes.push(element.type.name);
         });
 
-        // Stop elk type naam in de array pokemonTypes
+        // Stop elk type naam in de array pokemonAbilities
         data.abilities.forEach(element => {
             pokemonAbilities.push(element.ability.name);
         });
 
+        // Elk resultaat voeg je een komma en spatie toe
+        const typeResult = pokemonTypes.join(', ');
+        const abilitiesResult = pokemonAbilities.join(', ');
+
+        // Maak een nieuw base stats object aan
         const pokemonBaseStats = {
             id: data.id,
             hp: data.stats[0].base_stat,
@@ -125,10 +128,6 @@ export async function getSpecificPokemon(pokemonName) {
             defense: data.stats[2].base_stat,
             speed: data.stats[3].base_stat
         }
-
-        const newPokemonWeight = data.weight / 10;
-        const typeResult = pokemonTypes.join(', ');
-        const abilitiesResult = pokemonAbilities.join(', ');
 
         // Maak een nieuw pokemon object met bijbehorende data
         const pokemon = {
@@ -147,10 +146,10 @@ export async function getSpecificPokemon(pokemonName) {
         // Stop elke pokemon in de array pokemonData
         pokemonData.push(pokemon);
 
+        // Vul de store met de array pokemonData
         dataStoreSpecificPokemon.set(pokemonData);
     })
     .catch(error => {
-        // Vang eventuele fouten op tijdens de aanroep
         console.error('Fetch failed:', error);
     });
 }

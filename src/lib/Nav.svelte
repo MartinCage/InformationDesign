@@ -15,4 +15,10 @@
     nav img {
         width: 400px;
     }
+
+    @media only screen and (max-width: 600px) {
+        nav img {
+            width: 370px;
+        }
+    }
 </style>

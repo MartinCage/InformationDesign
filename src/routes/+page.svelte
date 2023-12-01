@@ -5,23 +5,28 @@
     import Filters from '$lib/Filters.svelte';
 
     onMount(async () => {
-        // Als de set wordt uitgevoerd op de dataStorePokemonStats, voer dan deze code uit.
+        // 'Abboneer' op de store. Als de waarde in de store veranderd, verander dan ook de waardes in deze code mee
         dataStorePokemonStats.subscribe((pokemonStats) => {
-            var container = document.getElementById('pokemon-holder');
+            const container = document.getElementById('pokemon-holder');
 
+            // // Zolang er nog cards bestaan, haal deze (oude) weg 
             while (container.firstChild) {
                 container.removeChild(container.firstChild);
             }
 
+            // Maak voor elke pokemon een nieuwe card aan en stuur deze naar de DOM
             pokemonStats.forEach(pokemon => {
-                // Maak een nieuw div-element aan voor de kaart
-                var firstLetter = pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1);
-                var pokemonId = pokemon.id < 10 ? '000' + pokemon.id : pokemon.id <= 100 ? '00' + pokemon.id : pokemon.id >= 100 ? '0' + pokemon.id : pokemon.id;
-                var card = document.createElement('a');
+                // Maak elke lekker van de pokemon naam een hoofdletter
+                let firstLetter = pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1);
+
+                // Elk pokemon id krijgt een 0 ervoor op basis van het aantal getallen waar het id uit bestaat
+                let pokemonId = pokemon.id < 10 ? '000' + pokemon.id : pokemon.id <= 100 ? '00' + pokemon.id : pokemon.id >= 100 ? '0' + pokemon.id : pokemon.id;
+
+                // Creëer het kaartje met een link naar de detailpagina van die pokemon. Stuur de naam en id mee in de url
+                let card = document.createElement('a');
                 card.className = 'card-link';
                 card.href = `pokemonDetail?name=${pokemon.name}&id=${pokemon.id}`;
 
-                // Voeg de titel en inhoud toe aan de kaart
                 card.innerHTML = `
                 <div class="card">
                     <img src="${pokemon.front_image}">
